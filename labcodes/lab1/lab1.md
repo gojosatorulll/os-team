@@ -31,19 +31,19 @@ CPU加电复位后从固定复位地址开始执行也就是ox1000
 
 此时还没执行第一条指令
 
-![image-20251007120142446](D:\notebook\image\image-20251007120142446.png)
+![image-20251007120142446](relevant_images\image-20251007120142446.png)
 
 接下来单步执行指令si
 
-![image-20251007120442858](D:\notebook\image\image-20251007120442858.png)
+![image-20251007120442858](relevant_images\image-20251007120442858.png)
 
 观察堆栈初始化并跟踪 OpenSBI 到内核加载过程：
 
-![image-20251007121746348](D:\notebook\image\image-20251007121746348.png)
+![image-20251007121746348](relevant_images\image-20251007121746348.png)
 
 watch：监控内核写入内存的瞬间，CPU 会在内核写入 `0x80200000` 时暂停，用 `info registers pc` 查看 PC，确认内核已经被加载。
 
-下一步继续单步跟踪，观察堆栈指针、全局指针、函数参数等寄存器的初始化![image-20251007121919074](D:\notebook\image\image-20251007121919074.png)
+下一步继续单步跟踪，观察堆栈指针、全局指针、函数参数等寄存器的初始化![image-20251007121919074](relevant_images\image-20251007121919074.png)
 
 
 
@@ -72,7 +72,7 @@ watch：监控内核写入内存的瞬间，CPU 会在内核写入 `0x80200000` 
 
 
 
-![image-20251007122352995](D:\notebook\image\image-20251007122352995.png)
+![image-20251007122352995](C:\Users\ztsgb\Desktop\riscv\lab\lab1\labcodes\lab1\relevant_images\image-20251007122352995.png)
 
 ```
 0x1010-0x80000000
@@ -85,7 +85,7 @@ watch：监控内核写入内存的瞬间，CPU 会在内核写入 `0x80200000` 
 - 初始化内存布局（如清零 BSS 段）
 - 为内核加载做准备
 
-![image-20251007122730212](D:\notebook\image\image-20251007122730212.png)
+![image-20251007122730212](relevant_images\image-20251007122730212.png)
 
 
 
@@ -123,11 +123,11 @@ watch：监控内核写入内存的瞬间，CPU 会在内核写入 `0x80200000` 
 3. 看到了内核 **第一条汇编指令**在做栈初始化
 4. 下一步就是单步跟踪 `kern_init` 的执行
 
-![](D:\notebook\image\image-20251007105938782.png)
+![](relevant_images\image-20251007105938782.png)
 
 在向下运行一条指令查看寄存器状态，发现bootstacktop的地址传给sp指针。
 
-![image-20251007111502216](D:\notebook\image\image-20251007111502216.png)
+![image-20251007111502216](relevant_images\image-20251007111502216.png)
 
 接下来执行kern_inti，pc寄存器地址发生改变，说明内核启动流程已经从 **汇编入口 (`kern_entry`) 转到 C 语言初始化 (`kern_init`)**
 
