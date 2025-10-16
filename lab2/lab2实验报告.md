@@ -1,3 +1,5 @@
+[TOC]
+
 # 练习一
 
 回答将以物理内存的分配过程为主线，解析过程中遇到的各类函数的作用。
@@ -174,3 +176,112 @@ default_free_pages(struct Page *base, size_t n) {
 3. **延迟合并**：不是每次都立即合并，而是将合并延后到下一次分配前，减少频繁操作链表的开销。
 
 4. **维护空闲区间:**用区间树（如红黑树）记录空闲内存区间，插入/删除/合并更高效。
+
+# 练习2
+
+## 设计实现过程
+
+### 1.**空闲块管理结构**
+
+代码用 [struct Page](vscode-file://vscode-app/c:/Users/he'ye/Desktop/Microsoft VS Code/resources/app/out/vs/code/electron-browser/workbench/workbench.html) 作为物理页描述符，每个空闲块的首页 `property` 字段记录连续空闲页数。所有空闲块通过 `free_list` 链表组织。
+
+### 2.**初始化**
+
+`best_fit_init` 用 `list_init(&free_list)` 初始化链表，`nr_free = 0`。
+`best_fit_init_memmap` 遍历每个页框，清空标志和引用计数，只在首页设置 `property = n`，并插入链表（按地址有序）。
+
+### 3.**分配算法（best_fit_alloc_pages）**
+
+遍历 `free_list`，查找 `property >= n` 且最小的块（best-fit）。
+
+找到后，若块大小大于 n，则将剩余部分重新插入链表（`list_add`），并更新 `property`。
+
+分配后用 `ClearPageProperty(page)` 清除分配块的属性标记，`nr_free -= n`。
+
+```c
+while ((le = list_next(le)) != &free_list) {
+    struct Page *p = le2page(le, page_link);
+    if (p->property >= n && p->property < min_size) {
+        page = p;
+        min_size = p->property;
+    }
+}
+```
+
+### 4.**释放算法（best_fit_free_pages）**
+
+释放时，先清空页标志和引用计数，然后设置 `property = n`，插入链表（按地址有序）。
+
+检查前后相邻块是否连续，若连续则合并（更新 `property`，删除被合并块）。
+
+合并用 `ClearPageProperty` 和 `list_del` 实现。
+
+```c
+le = list_prev(&(base->page_link));
+while (le != &free_list) {
+    p = le2page(le, page_link);
+    if (p + p->property == base) {
+        p->property += base->property;
+        ClearPageProperty(base);
+        list_del(&(base->page_link));
+        base = p;
+        le = list_prev(&(base->page_link));
+    } else {
+        break;
+    }
+}
+```
+
+### 5.**测试与验证**
+
+`best_fit_check` 自动测试分配和释放逻辑，确保算法正确。
+
+## 物理内存分配与释放原理
+
+分配时，始终选择最适合（最小但足够）的空闲块，减少大块被小请求切割造成的碎片。
+
+释放时，合并相邻空闲块，进一步减少碎片，提高大块分配成功率。
+
+所有操作均通过链表维护，保证遍历和插入效率。
+
+## 有进一步改进空间
+
+#### 1. 提高分配效率
+
+每次分配都要遍历整个链表，时间复杂度 O(N)。
+
+**改进**：
+
+可用平衡二叉树（如红黑树）或跳表管理空闲块，按块大小排序，查找最合适块只需 O(logN)。
+
+或维护多个链表，每个链表存放不同大小区间的空闲块（分级链表），小块/大块分配更快。
+
+#### 2. 减少内存碎片
+
+释放时只合并相邻块，碎片仍可能较多。
+
+**改进**：
+
+可采用伙伴系统（Buddy System），释放时自动合并同级伙伴块，碎片更少，分配/释放效率高。
+
+或定期整理空闲块（如后台合并），进一步减少碎片。
+
+#### 3. 支持多线程/并发
+
+链表操作未加锁，多核环境下可能出错。
+
+**改进**：
+
+在分配和释放时加锁（如自旋锁），保证并发安全。
+
+或采用 lock-free 数据结构，提升多核性能。
+
+#### 4. 分配策略优化
+
+只实现了 best-fit，部分场景下可能导致小块大量残留。
+
+**改进**：
+
+可结合 next-fit、worst-fit 等策略，根据实际负载动态切换分配算法。
+
+或引入延迟合并、预分配等机制，提升大块分配成功率。
