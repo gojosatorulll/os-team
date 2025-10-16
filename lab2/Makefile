@@ -98,7 +98,6 @@ $(call add_files_cc,$(call listf_cc,$(LIBDIR)),libs,)
 
 KINCLUDE	+= kern/debug/ \
 			   kern/driver/ \
-			   kern/trap/ \
 			   kern/mm/ \
 			   kern/arch/
 
@@ -106,10 +105,7 @@ KSRCDIR		+= kern/init \
 			   kern/libs \
 			   kern/debug \
 			   kern/driver \
-			   kern/trap \
 			   kern/mm
-
-
 
 KCFLAGS		+= $(addprefix -I,$(KINCLUDE))
 
@@ -119,8 +115,6 @@ else
 $(call add_files_cc,$(call listf_cc,$(KSRCDIR)),kernel,$(KCFLAGS))
 endif
 KOBJS	= $(call read_packet,kernel libs)
-
-
 
 # create kernel target
 kernel = $(call totarget,kernel)
@@ -202,7 +196,7 @@ GRADE_GDB_IN	:= .gdb.in
 GRADE_QEMU_OUT	:= .qemu.out
 HANDIN			:= proj$(PROJ)-handin.tar.gz
 
-TOUCH_FILES		:= kern/trap/trap.c
+TOUCH_FILES		:=
 
 MAKEOPTS		:= --quiet --no-print-directory
 
@@ -236,4 +230,4 @@ tags:
 	$(V)rm -f cscope.files cscope.in.out cscope.out cscope.po.out tags
 	$(V)find . -type f -name "*.[chS]" >cscope.files
 	$(V)cscope -bq 
-	$(V)ctags -L cscope.files·
+	$(V)ctags -L cscope.files
