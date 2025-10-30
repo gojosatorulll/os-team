@@ -13,6 +13,12 @@
 int kern_init(void) __attribute__((noreturn));
 void grade_backtrace(void);
 
+void test_exception(void) {
+    __asm__ volatile("ebreak");
+    __asm__ volatile(".word 0xffffffff");
+}
+
+
 int kern_init(void) {
     extern char edata[], end[];
     // 先清零 BSS，再读取并保存 DTB 的内存信息，避免被清零覆盖（为了解释变化 正式上传时我觉得应该删去这句话）
@@ -34,7 +40,7 @@ int kern_init(void) {
 
     clock_init();   // init clock interrupt
     intr_enable();  // enable irq interrupt
-
+    test_exception();
     /* do nothing */
     while (1)
         ;
