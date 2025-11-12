@@ -10,7 +10,26 @@ alloc_proc函数（位于kern/process/proc.c中）负责分配并返回一个新
 
 - 请说明proc_struct中`struct context context`和`struct trapframe *tf`成员变量含义和在本实验中的作用是啥？（提示通过看代码和编程调试可以判断出来）
 
+**struct context context**是用来保存cpu的上下文，当cpu进行了进程间的切换时，要保存旧进程的上下文也就是各种寄存器的状态比如：
 
+```c++
+struct context {
+    uint32_t eip;   // 指令指针
+    uint32_t esp;   // 栈指针
+    uint32_t ebp;   // 基址指针
+    uint32_t ebx;
+    uint32_t esi;
+    uint32_t edi;
+    // 其他通用寄存器
+};
+
+```
+
+**只保存内核模式需要的寄存器**（用户态寄存器通过 trapframe 保存）。当调度器决定切换进程时，调用函数switch_to(old,new),同时保存就进程的寄存器状态的context并把context恢复到new中（如果是第一次就初始化一个栈帧，使用proc->esp指向这个栈帧顶部）
+
+**struct trapframe *tf**用来存中断、异常、系统调用等时的cpu状态，trapframe 保存了 **完整寄存器集合**，包括用户态寄存器，每次中断时，cpu自动把寄存器压入内核栈中，由trapframe表示，内核通过tf修改栈中寄存器值。新建内核线程时，`tf` 可以为空，因为没有用户态寄存器要保存。
+
+综上，context可以看成是内核线程的快照，trapframe时用户态的快照。
 
 ##### 1.设计实现过程简要说明
 
@@ -111,11 +130,114 @@ idle 线程由 proc_init 首先创建并运行，init 线程通过 kernel_thread
 
 #### 扩展练习 Challenge：
 
-1. 说明语句`local_intr_save(intr_flag);....local_intr_restore(intr_flag);`是如何实现开关中断的？
+> 说明语句`local_intr_save(intr_flag);....local_intr_restore(intr_flag);`是如何实现开关中断的？
 
-2. 深入理解不同分页模式的工作原理（思考题）
+**RISC-V CPU 的中断控制**
 
-   get_pte()函数（位于`kern/mm/pmm.c`）用于在页表中查找或创建页表项，从而实现对指定线性地址对应的物理页的访问和映射操作。这在操作系统中的分页机制下，是实现虚拟内存与物理内存之间映射关系非常重要的内容。
+- RISC-V 用 `sstatus` 寄存器的 **SIE 位** 来控制 Supervisor（内核/特权级）下的中断允许：
+  - `SIE` = 1 → 中断允许
+  - `SIE` = 0 → 中断禁止
+- 当中断发生时，硬件会：
+  1. 清 `SIE`（自动禁止下一级中断）
+  2. 保存当前 `sstatus` 的 `SIE` 到 `SPIE`
+  3. 跳转到 trap handler
 
-   - get_pte()函数中有两段形式类似的代码， 结合sv32，sv39，sv48的异同，解释这两段代码为什么如此相像。
-   - 目前get_pte()函数将页表项的查找和页表项的分配合并在一个函数里，你认为这种写法好吗？有没有必要把两个功能拆开？
+```c++
+#define SSTATUS_SIE (1 << 1)
+
+static inline void local_intr_save(unsigned long *flags)
+{
+    unsigned long sstatus_val = read_csr(sstatus); // 读 sstatus 寄存器
+    *flags = sstatus_val & SSTATUS_SIE;           // 保存当前中断允许标志
+    clear_csr(sstatus, SSTATUS_SIE);             // 禁止中断
+}
+
+```
+
+`read_csr(sstatus)` : 读取 CPU 的状态寄存器
+
+保存当前 SIE 到 `irq_flags`
+
+`clear_csr(sstatus, SSTATUS_SIE)` : 禁止本 CPU 响应中断
+
+此时，当前核可以安全执行临界区代码，不会被中断打断。
+
+```c++
+static inline void local_intr_restore(unsigned long flags)
+{
+    if (flags & SSTATUS_SIE) 
+        set_csr(sstatus, SSTATUS_SIE);  // 恢复中断允许
+}
+
+```
+
+根据之前保存的 `irq_flags` 决定是否开启中断
+
+这样可以保证**临界区结束后恢复之前的中断状态**
+
+```c++
+local_intr_save(irq_flags);
+
+struct proc_struct *prev = current;
+current = proc;
+lsatp(proc->pgdir);
+switch_to(&prev->context, &proc->context);
+
+local_intr_restore(irq_flags);
+
+```
+
+1. 先禁止中断，避免在切换上下文时被打断 → 防止栈、寄存器被破坏
+2. 切换当前进程指针 `current`
+3. 切换页表 `lsatp`
+4. 上下文切换 `switch_to`
+5. 恢复中断，使 CPU 可以响应外部中断
+
+> 深入理解不同分页模式的工作原理（思考题）
+
+get_pte()函数（位于`kern/mm/pmm.c`）用于在页表中查找或创建页表项，从而实现对指定线性地址对应的物理页的访问和映射操作。这在操作系统中的分页机制下，是实现虚拟内存与物理内存之间映射关系非常重要的内容。
+
+> get_pte()函数中有两段形式类似的代码， 结合sv32，sv39，sv48的异同，解释这两段代码为什么如此相像?
+
+**答：**虚拟地址从高到低，每一层取对应的索引去页表中找下一级页表或最终 PTE。
+
+​	页表是 **两级结构**：
+
+```
+[一级页目录 PDE1] → [二级页目录 PDE0] → [页表项 PTE]
+```
+
+所以函数要：
+
+1. 从顶级页目录 `pgdir` 找到第一级表项（pdep1）
+2. 找到或创建第二级页表（pdep0）
+3. 最后返回具体 PTE 的地址
+
+它们都在做“查找当前层页表项 → 如果不存在就分配一页新的页表 → 写入 PTE → 进入下一层”的动作。
+
+所以在 SV39 下，`get_pte()` 逻辑就是三层嵌套：
+
+```c++
+// level 2
+if (!PTE_V) alloc();
+// level 1
+if (!PTE_V) alloc();
+// level 0
+if (!PTE_V) alloc();
+return PTE;
+
+```
+
+不论多少级，**每一层的逻辑几乎完全相同**，只是：
+
+- 层数不同
+- 每层索引位数不同（SV32 是 10 位，SV39/SV48 是 9 位）
+
+> 目前get_pte()函数将页表项的查找和页表项的分配合并在一个函数里，你认为这种写法好吗？有没有必要把两个功能拆开？
+
+页表页只有在需要时才真正分配，节省内存空间，避免一次性建立所有页表。
+
+如果只想检查页表是否存在，不希望修改页表结构，这个函数就显得“过重”。
+
+若分配失败（`alloc_page()` 返回 NULL），函数返回 NULL，调用者要额外判断是哪一层出了问题。
+如果拆开，上层可以自由选择是否允许分配，逻辑更灵活。
