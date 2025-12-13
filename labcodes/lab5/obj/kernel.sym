@@ -85,12 +85,11 @@ ffffffffc0207778 error_string
 0000000000000000 
 ffffffffc0215b20 _binary_obj___user_badsegment_out_start
 ffffffffc0254148 _binary_obj___user_forktest_out_end
-ffffffffc02356c0 _binary_obj___user_exit_out_end
 ffffffffc02914f0 _binary_obj___user_testbss_out_end
 ffffffffc020b010 _binary_obj___user_badarg_out_start
 ffffffffc0272358 _binary_obj___user_pgdir_out_end
+ffffffffc029c500 _binary_obj___user_yield_out_start
 ffffffffc025e800 _binary_obj___user_hello_out_start
-ffffffffc022a580 _binary_obj___user_exit_out_start
 ffffffffc029c500 _binary_obj___user_waitkill_out_end
 ffffffffc0268598 _binary_obj___user_hello_out_end
 ffffffffc027bfb0 _binary_obj___user_softint_out_end
@@ -111,6 +110,7 @@ ffffffffc023f288 _binary_obj___user_faultread_out_end
 ffffffffc0268598 _binary_obj___user_pgdir_out_start
 ffffffffc022a580 _binary_obj___user_divzero_out_end
 ffffffffc021ffc0 _binary_obj___user_divzero_out_start
+ffffffffc02a6478 _binary_obj___user_yield_out_end
 ffffffffc020021c print_kerninfo
 ffffffffc0205644 strcpy
 ffffffffc020a000 boot_page_table_sv39
@@ -123,6 +123,7 @@ ffffffffc020264c page_insert
 ffffffffc020501e wakeup_proc
 ffffffffc0201cc2 kallocated
 ffffffffc02035e2 pgdir_alloc_page
+ffffffffc02356c0 _binary_obj___user_exit_out_end
 ffffffffc02036c8 mm_create
 ffffffffc020518a syscall
 ffffffffc0200ba4 print_trapframe
@@ -147,9 +148,9 @@ ffffffffc0203dd2 kernel_thread_entry
 ffffffffc0204d48 do_wait
 ffffffffc02056c2 memcpy
 ffffffffc0201d76 kfree
-ffffffffc029c500 _binary_obj___user_yield_out_start
 ffffffffc02000a6 readline
 ffffffffc020004a kern_init
+ffffffffc022a580 _binary_obj___user_exit_out_start
 ffffffffc0203382 copy_range
 ffffffffc0201ee2 free_pages
 ffffffffc02a6498 edata
@@ -228,7 +229,6 @@ ffffffffc0207840 nbase
 ffffffffc02a6898 free_area
 ffffffffc0203d3e user_mem_check
 ffffffffc020560e strlen
-ffffffffc02a6478 _binary_obj___user_yield_out_end
 ffffffffc02005fe dtb_init
 ffffffffc020569a strchr
 ffffffffc0200326 mon_kerninfo

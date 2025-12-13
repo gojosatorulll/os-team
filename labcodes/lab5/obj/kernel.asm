@@ -7960,13 +7960,13 @@ ffffffffc0203e82:	0b250513          	addi	a0,a0,178 # ffffffffc0206f30 <default_
 ffffffffc0203e86:	fc06                	sd	ra,56(sp)
     KERNEL_EXECVE2(TEST, TESTSTART, TESTSIZE);
 ffffffffc0203e88:	b0cfc0ef          	jal	ra,ffffffffc0200194 <cprintf>
-ffffffffc0203e8c:	3fe06797          	auipc	a5,0x3fe06
-ffffffffc0203e90:	0ec78793          	addi	a5,a5,236 # 9f78 <_binary_obj___user_yield_out_size>
+ffffffffc0203e8c:	3fe07797          	auipc	a5,0x3fe07
+ffffffffc0203e90:	2b478793          	addi	a5,a5,692 # b140 <_binary_obj___user_exit_out_size>
 ffffffffc0203e94:	e43e                	sd	a5,8(sp)
 ffffffffc0203e96:	00003517          	auipc	a0,0x3
 ffffffffc0203e9a:	09250513          	addi	a0,a0,146 # ffffffffc0206f28 <default_pmm_manager+0xa08>
-ffffffffc0203e9e:	00098797          	auipc	a5,0x98
-ffffffffc0203ea2:	66278793          	addi	a5,a5,1634 # ffffffffc029c500 <_binary_obj___user_yield_out_start>
+ffffffffc0203e9e:	00026797          	auipc	a5,0x26
+ffffffffc0203ea2:	6e278793          	addi	a5,a5,1762 # ffffffffc022a580 <_binary_obj___user_exit_out_start>
 ffffffffc0203ea6:	f03e                	sd	a5,32(sp)
 ffffffffc0203ea8:	f42a                	sd	a0,40(sp)
     int64_t ret = 0, len = strlen(name);
