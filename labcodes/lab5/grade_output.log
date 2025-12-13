@@ -1,0 +1,59 @@
+kern/mm/kmalloc.c: In function '__slob_free_pages':
+kern/mm/kmalloc.c:92:29: warning: passing argument 1 of 'kva2page' makes pointer from integer without a cast [-Wint-conversion]
+   92 |         free_pages(kva2page(kva), 1 << order);
+      |                             ^~~
+      |                             |
+      |                             long unsigned int
+In file included from kern/mm/kmalloc.c:7:
+kern/mm/pmm.h:117:16: note: expected 'void *' but argument is of type 'long unsigned int'
+  117 | kva2page(void *kva)
+      |          ~~~~~~^~~
+In file included from kern/process/proc.c:5:
+In function 'page2ppn',
+    inlined from 'page2pa' at kern/mm/pmm.h:97:12,
+    inlined from 'page2kva' at kern/mm/pmm.h:113:12,
+    inlined from 'load_icode' at kern/process/proc.c:701:20,
+    inlined from 'do_execve' at kern/process/proc.c:803:16:
+kern/mm/pmm.h:91:17: warning: 'page' may be used uninitialized [-Wmaybe-uninitialized]
+   91 |     return page - pages + nbase;
+      |                 ^
+kern/process/proc.c: In function 'do_execve':
+kern/process/proc.c:614:18: note: 'page' was declared here
+  614 |     struct Page *page;
+      |                  ^~~~
+user/testbss.c: In function 'main':
+user/testbss.c:29:13: warning: array subscript 1049600 is above array bounds of 'uint32_t[1048576]' {aka 'unsigned int[1048576]'} [-Warray-bounds=]
+   29 |     bigarray[ARRAYSIZE + 1024] = 0;
+      |     ~~~~~~~~^~~~~~~~~~~~~~~~~~
+user/testbss.c:6:10: note: while referencing 'bigarray'
+    6 | uint32_t bigarray[ARRAYSIZE];
+      |          ^~~~~~~~
+gmake[1]: Entering directory '/mnt/c/Users/ztsgb/Desktop/riscv/lab/os-team/labcodes/lab5' + cc kern/init/entry.S + cc kern/init/init.c + cc kern/libs/readline.c + cc kern/libs/stdio.c + cc kern/debug/kdebug.c + cc kern/debug/kmonitor.c + cc kern/debug/panic.c + cc kern/driver/clock.c + cc kern/driver/console.c + cc kern/driver/dtb.c + cc kern/driver/intr.c + cc kern/driver/picirq.c + cc kern/trap/trap.c + cc kern/trap/trapentry.S + cc kern/mm/default_pmm.c + cc kern/mm/kmalloc.c + cc kern/mm/pmm.c + cc kern/mm/vmm.c + cc kern/process/entry.S + cc kern/process/proc.c + cc kern/process/switch.S + cc kern/schedule/sched.c + cc kern/syscall/syscall.c + cc libs/hash.c + cc libs/printfmt.c + cc libs/rand.c + cc libs/string.c + cc user/badarg.c + cc user/libs/initcode.S + cc user/libs/panic.c + cc user/libs/stdio.c + cc user/libs/syscall.c + cc user/libs/ulib.c + cc user/libs/umain.c + cc user/badsegment.c + cc user/divzero.c + cc user/exit.c + cc user/faultread.c + cc user/faultreadkernel.c + cc user/forktest.c + cc user/forktree.c + cc user/hello.c + cc user/pgdir.c + cc user/softint.c + cc user/spin.c + cc user/testbss.c + cc user/waitkill.c + cc user/yield.c + ld bin/kernel riscv64-unknown-elf-objcopy bin/kernel --strip-all -O binary bin/ucore.img gmake[1]: Leaving directory '/mnt/c/Users/ztsgb/Desktop/riscv/lab/os-team/labcodes/lab5'
+badsegment:              (1.7s)
+  -check result:                             no $qemu_out
+divzero:                 (1.8s)
+  -check result:                             no $qemu_out
+softint:                 (1.8s)
+  -check result:                             no $qemu_out
+faultread:               (1.8s)
+  -check result:                             no $qemu_out
+faultreadkernel:         (2.2s)
+  -check result:                             no $qemu_out
+hello:                   (1.7s)
+  -check result:                             no $qemu_out
+testbss:                 (1.8s)
+  -check result:                             no $qemu_out
+pgdir:                   (1.8s)
+  -check result:                             no $qemu_out
+yield:                   (1.8s)
+  -check result:                             no $qemu_out
+badarg:                  (1.8s)
+  -check result:                             no $qemu_out
+exit:                    (1.8s)
+  -check result:                             no $qemu_out
+spin:                    (1.8s)
+  -check result:                             no $qemu_out
+forktest:                (1.8s)
+  -check result:                             no $qemu_out
+Total Score: 0/120
+make: *** [Makefile:266: grade] Error 1

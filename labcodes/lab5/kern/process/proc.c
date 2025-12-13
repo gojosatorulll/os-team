@@ -734,19 +734,27 @@ load_icode(unsigned char *binary, size_t size)
     current->pgdir = PADDR(mm->pgdir);
     lsatp(PADDR(mm->pgdir));
 
-    //(6) setup trapframe for user environment
+    //(6) 为用户环境设置trapframe
     struct trapframe *tf = current->tf;
-    // Keep sstatus
+    // 保存sstatus
     uintptr_t sstatus = tf->status;
     memset(tf, 0, sizeof(struct trapframe));
-    /* LAB5:EXERCISE1 YOUR CODE
-     * should set tf->gpr.sp, tf->epc, tf->status
-     * NOTICE: If we set trapframe correctly, then the user level process can return to USER MODE from kernel. So
-     *          tf->gpr.sp should be user stack top (the value of sp)
-     *          tf->epc should be entry point of user program (the value of sepc)
-     *          tf->status should be appropriate for user program (the value of sstatus)
-     *          hint: check meaning of SPP, SPIE in SSTATUS, use them by SSTATUS_SPP, SSTATUS_SPIE(defined in risv.h)
+    /* LAB5:练习1 你的代码
+     * 需要设置 tf->gpr.sp, tf->epc, tf->status
+     * 注意：如果我们正确设置trapframe，那么用户级进程就可以从内核返回到用户模式。因此
+     *          tf->gpr.sp 应该是用户栈顶（sp的值）
+     *          tf->epc 应该是用户程序的入口点（sepc的值）
+     *          tf->status 应该适合用户程序（sstatus的值）
+     *          提示：检查SSTATUS中SPP、SPIE的含义，通过SSTATUS_SPP、SSTATUS_SPIE使用它们（定义在riscv.h中）
      */
+    // 设置用户栈指针，指向用户栈顶
+    tf->gpr.sp = USTACKTOP;
+    // 设置程序入口点，从ELF头部获取
+    tf->epc = elf->e_entry;
+    // 设置状态寄存器：
+    // - 清除SPP位（设为0表示返回到用户模式）
+    // - 设置SPIE位（使能中断）
+    tf->status = (sstatus & ~SSTATUS_SPP) | SSTATUS_SPIE;
 
     ret = 0;
 out:
@@ -928,12 +936,22 @@ kernel_execve(const char *name, unsigned char *binary, size_t size)
     return ret;
 }
 
+// __KERNEL_EXECVE - 内核执行用户程序的底层宏
+// 功能：打印执行信息，然后调用kernel_execve加载并执行用户程序
+// 参数：name - 程序名称字符串, binary - 程序二进制内容起始地址, size - 程序大小
 #define __KERNEL_EXECVE(name, binary, size) ({           \
     cprintf("kernel_execve: pid = %d, name = \"%s\".\n", \
             current->pid, name);                         \
     kernel_execve(name, binary, (size_t)(size));         \
 })
 
+// KERNEL_EXECVE - 通过程序名自动定位用户程序二进制数据的宏
+// 工作原理：
+// 1. 链接器会将obj/__user_xxx_out编译成符号_binary_obj___user_xxx_out_start(起始地址)
+//    和_binary_obj___user_xxx_out_size(大小)
+// 2. 通过##连接符和#字符串化，将参数x转换为对应的符号名
+// 3. 例如 KERNEL_EXECVE(exit) 会展开为执行obj/__user_exit_out程序
+// 使用：KERNEL_EXECVE(程序名) - 程序名不带引号
 #define KERNEL_EXECVE(x) ({                                    \
     extern unsigned char _binary_obj___user_##x##_out_start[], \
         _binary_obj___user_##x##_out_size[];                   \
@@ -941,49 +959,81 @@ kernel_execve(const char *name, unsigned char *binary, size_t size)
                     _binary_obj___user_##x##_out_size);        \
 })
 
+// __KERNEL_EXECVE2 - 自定义符号名的内核执行宏
+// 功能：与KERNEL_EXECVE类似，但允许自定义起始地址和大小的符号名
+// 参数：x - 程序名, xstart - 自定义的起始地址符号, xsize - 自定义的大小符号
 #define __KERNEL_EXECVE2(x, xstart, xsize) ({   \
     extern unsigned char xstart[], xsize[];     \
     __KERNEL_EXECVE(#x, xstart, (size_t)xsize); \
 })
 
+// KERNEL_EXECVE2 - __KERNEL_EXECVE2的简单封装
+// 用于测试时使用自定义的符号名（如TEST、TESTSTART、TESTSIZE）
 #define KERNEL_EXECVE2(x, xstart, xsize) __KERNEL_EXECVE2(x, xstart, xsize)
 
-// user_main - kernel thread used to exec a user program
+// user_main - 用于执行用户程序的内核线程
+// 功能：根据编译配置选择要执行的第一个用户程序
+// - 如果定义了TEST宏，执行测试程序（使用KERNEL_EXECVE2加载自定义程序）
+// - 否则执行exit程序（使用KERNEL_EXECVE加载obj/__user_exit_out）
+// 注意：正常情况下execve不会返回，如果返回说明执行失败，触发panic
 static int
 user_main(void *arg)
 {
 #ifdef TEST
+    // 测试模式：执行通过TEST、TESTSTART、TESTSIZE指定的程序
     KERNEL_EXECVE2(TEST, TESTSTART, TESTSIZE);
 #else
+    // 默认模式：执行exit用户程序
     KERNEL_EXECVE(exit);
 #endif
+    // 如果execve返回，说明执行失败
     panic("user_main execve failed.\n");
 }
 
 // init_main - the second kernel thread used to create user_main kernel threads
+// init_main - 第二个内核线程，用于创建用户态主线程并管理其生命周期
 static int
 init_main(void *arg)
 {
+    // 保存当前系统的空闲页面数，用于后续内存泄漏检测
     size_t nr_free_pages_store = nr_free_pages();
+    // 保存当前内核已分配的内存量，用于后续内存泄漏检测
     size_t kernel_allocated_store = kallocated();
 
+    // 创建user_main内核线程，该线程负责启动所有用户态进程
     int pid = kernel_thread(user_main, NULL, 0);
     if (pid <= 0)
     {
         panic("create user_main failed.\n");
     }
 
+    // 循环等待所有子进程退出
+    // do_wait(0, NULL)会等待任意一个子进程结束，返回0表示还有子进程在运行
+    // 当所有子进程都退出后，do_wait返回非0值，循环结束
     while (do_wait(0, NULL) == 0)
     {
-        schedule();
+        schedule();  // 让出CPU，调度其他进程运行
     }
 
+    // 所有用户态进程已经退出
     cprintf("all user-mode processes have quit.\n");
+    
+    // 检查initproc进程状态是否正确
+    // cptr: child pointer，子进程指针应为NULL（无子进程）
+    // yptr: younger sibling pointer，弟进程指针应为NULL（无弟进程）
+    // optr: older sibling pointer，兄进程指针应为NULL（无兄进程）
     assert(initproc->cptr == NULL && initproc->yptr == NULL && initproc->optr == NULL);
+    
+    // 检查当前系统只剩下2个进程：idleproc和initproc
     assert(nr_process == 2);
+    
+    // 检查进程链表中只有initproc一个进程节点
+    // list_next应该指向initproc的list_link（只有一个节点时，next指向自己）
     assert(list_next(&proc_list) == &(initproc->list_link));
+    // list_prev应该指向initproc的list_link（只有一个节点时，prev指向自己）
     assert(list_prev(&proc_list) == &(initproc->list_link));
 
+    // 内存检查通过（暗示没有内存泄漏）
     cprintf("init check memory pass.\n");
     return 0;
 }
