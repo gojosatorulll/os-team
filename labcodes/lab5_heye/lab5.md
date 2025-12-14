@@ -286,7 +286,7 @@ ucore 采用这种“**预加载嵌入式**”方式，主要原因有：
 
 ##### 1.启动qemu和gdb调试。
 
-![image-20251214220448628](C:\Users\he'ye\Desktop\lab5.assets\image-20251214220448628.png)
+![image-20251214233539868](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233539868.png)
 
 ##### 2.设置gdb的远程超时时间为无限大，避免因为qemu运行时间过长而导致gdb超时。
 
@@ -300,7 +300,7 @@ ucore 采用这种“**预加载嵌入式**”方式，主要原因有：
 
 ##### 4.加载额外的符号信息文件
 
-![image-20251214220651749](C:\Users\he'ye\Desktop\lab5.assets\image-20251214220651749.png)
+![image-20251214233556696](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233556696.png)
 
 add-symbol-file obj/__usr_exit.out 是 GDB（GNU 调试器）中的一个命令，用于在调试时加载额外的符号信息文件。其作用如下：
 
@@ -311,11 +311,9 @@ add-symbol-file obj/__usr_exit.out 是 GDB（GNU 调试器）中的一个命令�
 
 ##### 5.syscall.c打断点
 
-![image-20251214220829631](C:\Users\he'ye\Desktop\lab5.assets\image-20251214220829631.png)
+![image-20251214233604645](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233604645.png)
 
-
-
-![image-20251214221014599](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221014599.png)
+![image-20251214233610791](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233610791.png)
 
 | 汇编指令        | 作用                                                         |
 | --------------- | ------------------------------------------------------------ |
@@ -334,15 +332,15 @@ add-symbol-file obj/__usr_exit.out 是 GDB（GNU 调试器）中的一个命令�
 
 ##### 6.观察ecall的位置
 
-![image-20251214221406335](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221406335.png)
+![image-20251214233622227](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233622227.png)
 
 ##### 7.si单步执行到ecall
 
-![image-20251214221452339](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221452339.png)
+![image-20251214233628494](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233628494.png)
 
 CPU 仍处于 用户态，把系统调用号和最多5个参数分别装入 RISC-V 的 `a0` 到 `a5` 寄存器，然后执行 `ecall` 指令陷入内核；内核处理完后，将返回值通过 `a0` 传回，并存入变量 `ret`。
 
-![image-20251214221519364](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221519364.png)
+![image-20251214233635531](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233635531.png)
 
 
 
@@ -352,11 +350,9 @@ CPU 仍处于 用户态，把系统调用号和最多5个参数分别装入 RISC
 
 ##### 9.在trapentry.S处的133行指令处打上断点
 
-![image-20251214221539292](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221539292.png)
+![image-20251214233644000](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233644000.png)
 
-
-
-![image-20251214221615276](C:\Users\he'ye\Desktop\lab5.assets\image-20251214221615276.png)
+![image-20251214233650104](C:\Users\he'ye\Desktop\os小组\labcodes\lab5_heye\lab5.assets\image-20251214233650104.png)
 
 
 
