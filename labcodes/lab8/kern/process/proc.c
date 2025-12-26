@@ -91,6 +91,7 @@ alloc_proc(void)
     struct proc_struct *proc = kmalloc(sizeof(struct proc_struct));
     if (proc != NULL)
     {
+        //何叶 2313487
         // LAB4:填写你在lab4中实现的代码 已填写
         /*
          * below fields in proc_struct need to be initialized
@@ -126,7 +127,7 @@ alloc_proc(void)
          *       uint32_t lab6_priority;                     // priority value (lab6 stride)
          */
 
-        //LAB8 YOUR CODE : (update LAB6 steps)
+        //LAB8 YOUR CODE : (update LAB6 steps) 何叶 2313487
         /*
          * below fields(add in LAB6) in proc_struct need to be initialized
          *       struct files_struct * filesp;                file struct point        
@@ -256,6 +257,7 @@ get_pid(void)
 // NOTE: before call switch_to, should load  base addr of "proc"'s new PDT
 void proc_run(struct proc_struct *proc)
 {
+    //何叶 2313487
     // LAB4:填写你在lab4中实现的代码
         /*
         * Some Useful MACROs, Functions and DEFINEs, you can use them in below implementation.
@@ -265,7 +267,7 @@ void proc_run(struct proc_struct *proc)
         *   lcr3():                   Modify the value of CR3 register
         *   switch_to():              Context switching between two processes
         */
-    //LAB8 YOUR CODE : (update LAB4 steps)
+    //LAB8 YOUR CODE : (update LAB4 steps)何叶 2313487
       /*
        * below fields(add in LAB6) in proc_struct need to be initialized
        *       before switch_to();you should flush the tlb
@@ -515,6 +517,7 @@ int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
         goto fork_out;
     }
     ret = -E_NO_MEM;
+    // 何叶 2313487
     // LAB8:EXERCISE2 YOUR CODE  HINT:how to copy the fs in parent's proc_struct?
     // LAB4:填写你在lab4中实现的代码
     /*
@@ -542,7 +545,7 @@ int do_fork(uint32_t clone_flags, uintptr_t stack, struct trapframe *tf)
     //    6. call wakeup_proc to make the new child process RUNNABLE
     //    7. set ret vaule using child proc's pid
 
-    // LAB5:填写你在lab5中实现的代码 (update LAB4 steps)
+    // LAB5:填写你在lab5中实现的代码 (update LAB4 steps)何叶 2313487
     /* Some Functions
      *    set_links:  set the relation links of process.  ALSO SEE: remove_links:  lean the relation links of process
      *    -------------------
@@ -690,6 +693,7 @@ load_icode_read(int fd, void *buf, size_t len, off_t offset)
 
 static int
 load_icode(int fd, int argc, char **kargv) {
+    // 何叶 2313487
     /* LAB8:EXERCISE2 YOUR CODE  HINT:how to load the file with handler fd  in to process's memory? how to setup argc/argv?
      * MACROs or Functions:
      *  mm_create        - create a mm
