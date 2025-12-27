@@ -311,3 +311,23 @@ events:
     message: |
       Detecting C compiler /showIncludes prefix:
         
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Check for working C compiler: D:/Application/LLVM/bin/clang.exe"
+    directories:
+      source: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-4x2acq"
+      binary: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-4x2acq"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+      exitCode: 1
+...
