@@ -1,0 +1,313 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 6.2.9200 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/Application/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        D:/操作系统/os-team/build/CMakeFiles/3.29.3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:67 (try_compile)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-w8jpj5"
+      binary: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-w8jpj5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+      exitCode: 1
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/Application/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        D:/操作系统/os-team/build/CMakeFiles/3.29.3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Check for working C compiler: D:/Application/LLVM/bin/clang.exe"
+    directories:
+      source: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-aa8x8i"
+      binary: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-aa8x8i"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+      exitCode: 1
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/Application/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        D:/操作系统/os-team/build/CMakeFiles/3.29.3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Check for working C compiler: D:/Application/LLVM/bin/clang.exe"
+    directories:
+      source: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-tyefzl"
+      binary: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-tyefzl"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+      exitCode: 1
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/Application/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        D:/操作系统/os-team/build/CMakeFiles/3.29.3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:56 (try_compile)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Check for working C compiler: D:/Application/LLVM/bin/clang.exe"
+    directories:
+      source: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-wqstfq"
+      binary: "D:/\u64cd\u4f5c\u7cfb\u7edf/os-team/build/CMakeFiles/CMakeScratch/TryCompile-wqstfq"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_COMPILER_WORKS"
+      cached: true
+      stdout: |
+      exitCode: 1
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: D:/Application/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        D:/操作系统/os-team/build/CMakeFiles/3.29.3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "D:/Application/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        

@@ -1,0 +1,108 @@
+<html>
+<head>
+    <title>ucore lab6 进程调度流程图</title>
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background: #f9f9f9; margin: 40px; }
+        .flowchart { max-width: 900px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; margin-bottom: 40px; }
+        .step { 
+            background: #e3f2fd; 
+            border-left: 6px solid #2196F3; 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 8px; 
+            position: relative; 
+            min-height: 80px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .step.interrupt { background: #ffebee; border-left-color: #f44336; }
+        .step.framework { background: #e8f5e8; border-left-color: #4caf50; }
+        .step.schedclass { background: #fff3e0; border-left-color: #ff9800; }
+        .step.title { font-weight: bold; font-size: 1.2em; color: #333; margin-bottom: 8px; }
+        .arrow { text-align: center; font-size: 2em; color: #666; margin: 10px 0; }
+        .note { font-size: 0.9em; color: #666; margin-top: 10px; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="flowchart">
+        <h1>ucore lab6 进程调度完整流程图（Round-Robin 调度）</h1>
+        
+        <div class="step interrupt">
+            <div class="step title">1. 时钟中断发生（Clock Interrupt）</div>
+            <div>硬件定时器触发中断<br>进入 trap() → clock_interrupt_handler()</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">2. 调用 sched_class_proc_tick(current)</div>
+            <div>位于 kern/schedule/sched.c<br>判断当前进程是否为 idleproc</div>
+            <div class="note">若为 idleproc：直接设置 current->need_resched = 1<br>若非 idleproc：继续向下</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step schedclass">
+            <div class="step title">3. 调用调度类函数 proc_tick(rq, current)</div>
+            <div>实际调用 RR_proc_tick(rq, current)<br>proc->time_slice--<br>若 time_slice == 0 → current->need_resched = 1</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">4. 时钟中断返回，检查 current->need_resched</div>
+            <div>若 need_resched == 1，则调用 schedule()</div>
+            <div class="note">（也可能由 yield、阻塞等主动触发 schedule）</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">5. 执行 schedule() 函数（核心调度入口）</div>
+            <div>关闭中断保护 → current->need_resched = 0</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">6. 若 current 仍为 RUNNABLE → 重新入队</div>
+            <div>调用 sched_class_enqueue(current)<br>→ sched_class->enqueue(rq, current)<br>→ RR_enqueue：插入链表尾部，重置 time_slice</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step schedclass">
+            <div class="step title">7. 选择下一个进程</div>
+            <div>调用 sched_class_pick_next()<br>→ sched_class->pick_next(rq)<br>→ RR_pick_next：返回链表头部进程（若为空返回 NULL）</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">8. 若选中进程 next ≠ NULL → 出队</div>
+            <div>调用 sched_class_dequeue(next)<br>→ sched_class->dequeue(rq, next)<br>→ RR_dequeue：从链表删除，proc_num--</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">9. 若无就绪进程 → 选择 idleproc</div>
+            <div>next = idleproc</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">10. 更新统计并切换进程</div>
+            <div>next->runs++<br>若 next ≠ current → proc_run(next)<br>（上下文切换：切换页表、栈、寄存器等）</div>
+        </div>
+        
+        <div class="arrow">↓</div>
+        
+        <div class="step framework">
+            <div class="step title">11. 调度完成，返回继续执行新进程</div>
+            <div>恢复中断 → 新进程获得 CPU</div>
+        </div>
+    </div>
+</body>
+</html>
